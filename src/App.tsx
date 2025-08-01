@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
-import { getSocket } from "./socket";
 
 // Message type for chat
 interface Message {
@@ -186,17 +185,14 @@ function App() {
 											</span>
 										) : null}
 										{msg.imageUrl && (
-											<img
-												src={msg.imageUrl}
-												alt="chat-img"
+											<iframe
+												src={msg.imageUrl ?? ""}
+												title="chat-image"
 												className="chat-image"
-											/>
-										)}
-										{msg.imageUrl && (
-											<img
-												src={msg.imageUrl}
-												alt="chat-img"
-												className="chat-image"
+												width="360"
+												height="180"
+												style={{ border: "none" }}
+												allowFullScreen
 											/>
 										)}
 									</div>
@@ -206,9 +202,9 @@ function App() {
 								<div className="chat-message bot">
 									<div className="chat-bubble">
 										<span className="bouncing-dots">
-											<span>.</span>
-											<span>.</span>
-											<span>.</span>
+											<span>•</span>
+											<span>•</span>
+											<span>•</span>
 										</span>
 									</div>
 								</div>
