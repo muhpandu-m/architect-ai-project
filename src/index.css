@@ -1,68 +1,165 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+	/* Coolors Palette: https://coolors.co/palette/386641-6a994e-a7c957-f2e8cf-bc4749 */
+	--color-darkgreen: #386641;
+	--color-green: #6a994e;
+	--color-lightgreen: #a7c957;
+	--color-cream: #f2e8cf;
+	--color-red: #bc4749;
+	--color-main: #f2e8cf;
+	--color-bright: #386641;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	color-scheme: dark;
+	color: var(--color-bright);
+	background-color: var(--color-dark);
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+	font-weight: 500;
+	color: var(--color-greenblue);
+	text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+	color: var(--color-navy);
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+	margin: 0;
+	display: flex;
+	place-items: center;
+	min-width: 320px;
+	min-height: 100vh;
+	background: var(--color-main);
+	color: var(--color-bright);
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+	font-size: 3.2em;
+	line-height: 1.1;
+	color: var(--color-darkgreen);
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+	border-radius: 8px;
+	border: 1px solid var(--color-green);
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: var(--color-green);
+	color: var(--color-cream);
+	cursor: pointer;
+	transition: border-color 0.25s, background 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+	border-color: var(--color-darkgreen);
+	background: var(--color-darkgreen);
+	color: var(--color-cream);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+	outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Chat container (room) styles */
+.chat-container {
+	background: var(--color-cream);
+	border-radius: 16px;
+	border: 2px solid var(--color-green);
+	box-shadow: 0 2px 16px rgba(56, 102, 65, 0.15);
+	padding: 1.5rem 0.5rem;
+	display: flex;
+	flex-direction: column;
+	min-height: 70vh;
+	width: 70vw;
+	max-width: 900px;
+	min-width: 320px;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+
+/* Chat title styles */
+.chat-title {
+	font-size: 2.4rem;
+	font-weight: 700;
+	color: var(--color-darkgreen);
+	text-align: center;
+	margin-bottom: 2rem;
+	letter-spacing: 1px;
+	text-shadow: 0 2px 8px rgba(56, 102, 65, 0.12);
+	background: none;
+	-webkit-background-clip: initial;
+	-webkit-text-fill-color: initial;
+	background-clip: initial;
+}
+
+/* Session button styles */
+.session-btn {
+	background: var(--color-green);
+	color: var(--color-cream);
+	border: 1px solid var(--color-darkgreen);
+	border-radius: 8px;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	cursor: pointer;
+	margin-left: 1rem;
+	transition: background 0.2s, color 0.2s;
+	box-shadow: 0 2px 8px rgba(56, 102, 65, 0.1);
+}
+.session-btn:hover {
+	background: var(--color-darkgreen);
+	color: var(--color-cream);
+}
+
+input,
+textarea,
+select {
+	border: 1px solid var(--color-green);
+	border-radius: 6px;
+	padding: 0.5em;
+	font-size: 1em;
+	font-family: inherit;
+	color: var(--color-darkgreen);
+	background: var(--color-cream);
+	transition: border-color 0.2s;
+}
+input:focus,
+textarea:focus,
+select:focus {
+	border-color: var(--color-darkgreen);
+	outline: none;
+}
+
+.card,
+.panel,
+.box,
+.section,
+.modal {
+	border: 2px solid var(--color-green);
+	border-radius: 12px;
+	background: var(--color-cream);
+	box-shadow: 0 2px 8px rgba(56, 102, 65, 0.08);
+	padding: 1rem;
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+	:root {
+		color: #232323;
+		background-color: #f5f5f3;
+	}
+	a:hover {
+		color: #7a9d7a;
+	}
+	button {
+		background-color: #4a5a6a;
+		color: #f5f5f3;
+	}
 }
