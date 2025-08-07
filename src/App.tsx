@@ -20,9 +20,11 @@ function App() {
    const [loading, setLoading] = useState(false);
    const [sessionId, setSessionId] = useState<string | null>(null);
    const [chatStarted, setChatStarted] = useState(false);
+   const [initialInput, setInitialInput] = useState("");
    const messagesEndRef = useRef<HTMLDivElement | null>(null);
    const inputRef = useRef<HTMLInputElement | null>(null);
    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+   const initialTextareaRef = useRef<HTMLTextAreaElement | null>(null);
 
    // Start a new chat session
    const startNewSession = () => {
@@ -31,6 +33,54 @@ function App() {
       setSessionId(newSessionId);
       setMessages([]);
       setChatStarted(true);
+   };
+
+   // Start initial chat with first message
+   const startInitialChat = async () => {
+      if (!initialInput.trim()) return;
+
+      const newSessionId = Math.random().toString(36).substring(2) + Date.now();
+      localStorage.setItem("architect_ai_session_id", newSessionId);
+      setSessionId(newSessionId);
+
+      const userMsg: Message = {
+         id: Date.now() + "-user",
+         text: initialInput,
+         sender: "user",
+      };
+      setMessages([userMsg]);
+      setChatStarted(true);
+      setLoading(true);
+
+      try {
+         const res = await fetch(N8N_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+               message: initialInput,
+               sessionId: newSessionId,
+            }),
+         });
+         const data = await res.json();
+         const botMsg: Message = {
+            id: Date.now() + "-bot",
+            text: data.text,
+            imageUrl: data.imageUrl,
+            sender: "bot",
+         };
+         setMessages((msgs) => [...msgs, botMsg]);
+      } catch (err) {
+         setMessages((msgs) => [
+            ...msgs,
+            {
+               id: Date.now() + "-error",
+               text: "Oops, something went wrong with the bot. Try asking again.",
+               sender: "bot",
+            },
+         ]);
+      } finally {
+         setLoading(false);
+      }
    };
 
    // Regenerate sessionId and clear chat
@@ -59,6 +109,9 @@ function App() {
             textareaRef.current.scrollHeight + "px";
       }
    }, [input]);
+
+   // Initial textarea stays fixed height (one line)
+   // No auto-resize for initial input to keep it single line
 
    // Send message to n8n
    const sendMessage = async () => {
@@ -111,14 +164,40 @@ function App() {
       }
    };
 
+   const handleInitialKeyDown = (
+      e: React.KeyboardEvent<HTMLTextAreaElement>
+   ) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+         e.preventDefault();
+         startInitialChat();
+      }
+   };
+
    return (
       <>
          <div className="chat-title">Make Your Design with AI Assistant</div>
          {!chatStarted ? (
-            <div className="start-session-bar">
-               <button className="session-btn" onClick={startNewSession}>
-                  Start New Chat
-               </button>
+            <div className="initial-chat-container">
+               <div className="initial-question">
+                  Desain apa yang ingin kamu buat?
+               </div>
+               <div className="initial-chat-input">
+                  <textarea
+                     ref={initialTextareaRef}
+                     value={initialInput}
+                     onChange={(e) => setInitialInput(e.target.value)}
+                     onKeyDown={handleInitialKeyDown}
+                     placeholder="Contoh: Aku ingin membuat desain rumah tinggal"
+                     disabled={loading}
+                     rows={1}
+                  />
+                  <button
+                     onClick={startInitialChat}
+                     disabled={loading || !initialInput.trim()}
+                  >
+                     Send
+                  </button>
+               </div>
             </div>
          ) : (
             <>
